@@ -83,7 +83,7 @@ Modernisasi dilaksanakan dalam empat tahap berurutan.
 
 **Tahap 4 — Partial Mesh dan Konfigurasi Cost.** Dua link fisik baru ditambahkan: DC ether3 ke CAB1 ether3 (subnet 10.10.10.12/30) dan DC ether4 ke CAB2 ether3 (subnet 10.10.10.16/30). Kedua interface baru didaftarkan ke OSPF. Untuk mengarahkan pemilihan jalur, OSPF cost pada interface backup (ether3) dinaikkan secara manual menjadi 100 di CAB1-Galih dan CAB2-Marist, sehingga accumulated cost jalur backup menjadi lebih tinggi dibandingkan jalur via HQ yang menggunakan cost default sebesar 1 [1].
 
-Konfigurasi lengkap seluruh perangkat tersedia pada repositori GitHub: **[URL repositori — akan diisi sebelum submission]**.
+Konfigurasi lengkap seluruh perangkat — termasuk file konfigurasi MikroTik RouterOS (.rsc) untuk setiap router dan switch, tabel pengalamatan IP, serta diagram topologi — tersedia sebagai supplementary material pada repositori GitHub: **https://github.com/karangsawo123/modernisasi-jaringan-vlan-ospf**. File konfigurasi disusun per perangkat pada direktori `configs/` agar pembaca dapat mereplikasi simulasi secara independen.
 
 ### 2.4 Skenario Pengujian
 
