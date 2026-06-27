@@ -1,4 +1,4 @@
-# [WORKING TITLE] Modernisasi Infrastruktur Jaringan Multi-Cabang melalui Integrasi VLAN, Router-on-a-Stick, OSPF, dan Partial Mesh
+# Modernisasi Infrastruktur Jaringan Multi-Cabang Menggunakan VLAN, OSPF, dan Topologi Partial Mesh untuk Mendukung Failover Otomatis
 
 > **Catatan kerja (bukan bagian dari artikel):**
 > - Judul di atas bersifat sementara (working title) dan belum dikunci.
