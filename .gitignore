@@ -22,3 +22,12 @@ desktop.ini
 *.tmp
 *.bak
 *.log
+
+# Sensitive/Article files
+artikel.md
+
+# Microsoft Word temporary files
+~$*.docx
+~$*.doc
+~$*
+
