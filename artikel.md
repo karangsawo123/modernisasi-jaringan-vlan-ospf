@@ -101,11 +101,15 @@ Teknik Router-on-a-Stick pada CAB1-Galih dan CAB2-Marist berfungsi sebagaimana d
 
 ### 3.2 OSPF Adjacency dan Routing Table
 
-Seluruh router berhasil membentuk adjacency OSPF dengan status **Full** — status tertinggi dalam proses pembentukan neighbor OSPF yang menandakan bahwa pertukaran Link State Advertisement (LSA) telah selesai dan database topologi tersinkronisasi antar router [1]. Pada topologi partial mesh final, DC-Dicky-Rista memiliki tiga OSPF neighbor (HQ-Dika, CAB1-Galih, CAB2-Marist), sedangkan CAB1-Galih dan CAB2-Marist masing-masing memiliki dua neighbor (HQ-Dika dan DC-Dicky-Rista).
+Seluruh router berhasil membentuk adjacency OSPF dengan status **Full** — status tertinggi dalam proses pembentukan neighbor OSPF yang menandakan bahwa pertukaran Link State Advertisement (LSA) telah selesai dan database topologi tersinkronisasi antar router [1]. Pada topologi partial mesh final, DC-Dicky-Rista memiliki tiga OSPF neighbor (HQ-Dika, CAB1-Galih, CAB2-Marist), sedangkan CAB1-Galih dan CAB2-Marist masing-masing memiliki dua neighbor (HQ-Dika dan DC-Dicky-Rista). Bukti adjacency OSPF pada DC-Dicky-Rista ditampilkan pada Gambar 2.
+
+**[Gambar 2. OSPF Neighbor pada DC-Dicky-Rista — Tiga Neighbor dengan Status Full]**
 
 Routing table pada seluruh router terisi dengan rute dinamis bertanda flag **DAo** (Dynamic, Active, OSPF) dengan administrative distance 110. Tidak ada rute manual yang aktif — seluruh distribusi informasi routing berlangsung otomatis melalui OSPF.
 
-Verifikasi primary path pada CAB1-Galih menunjukkan bahwa rute menuju 172.16.10.0/26 (LAN Data Center) menggunakan next-hop **10.10.10.5** (ether2 HQ-Dika via ether1 CAB1), bukan 10.10.10.13 (jalur backup DC langsung). Hal ini mengonfirmasi bahwa konfigurasi cost manual (cost=100) pada interface backup berhasil mengarahkan OSPF untuk memilih jalur via HQ sebagai primary path saat kondisi normal, sesuai tujuan implementasi [1][4].
+Verifikasi primary path pada CAB1-Galih menunjukkan bahwa rute menuju 172.16.10.0/26 (LAN Data Center) menggunakan next-hop **10.10.10.5** (ether2 HQ-Dika via ether1 CAB1), bukan 10.10.10.13 (jalur backup DC langsung). Hal ini mengonfirmasi bahwa konfigurasi cost manual (cost=100) pada interface backup berhasil mengarahkan OSPF untuk memilih jalur via HQ sebagai primary path saat kondisi normal, sesuai tujuan implementasi [1][4]. Routing table CAB1-Galih pada kondisi normal ditampilkan pada Gambar 3.
+
+**[Gambar 3. Routing Table CAB1-Galih Kondisi Normal — Primary Path via HQ-Dika (10.10.10.5)]**
 
 ### 3.3 Pengujian Failover OSPF
 
@@ -133,9 +137,13 @@ Perbandingan antara nilai teoritis dan hasil aktual disajikan pada Tabel 4.
 
 Rata-rata waktu failover sebesar 36,73 detik lebih cepat dari satu dead interval penuh (40 detik). Hal ini diduga disebabkan oleh dua faktor: pertama, HQ-Dika kemungkinan dimatikan pada pertengahan siklus Hello sehingga dead timer router tetangga telah berjalan sebagian sebelum penonaktifan; kedua, proses SPF recalculate berlangsung sangat cepat (< 1 detik) segera setelah dead timer habis [1][4].
 
-Setelah re-konvergensi selesai, routing table CAB1-Galih menunjukkan perubahan next-hop untuk rute 172.16.10.0/26 dari 10.10.10.5 (HQ-Dika) menjadi **10.10.10.13** (DC-Dicky-Rista, via ether3 backup), membuktikan bahwa OSPF berhasil mengaktifkan jalur backup secara otomatis tanpa intervensi administrator.
+Setelah re-konvergensi selesai, routing table CAB1-Galih menunjukkan perubahan next-hop untuk rute 172.16.10.0/26 dari 10.10.10.5 (HQ-Dika) menjadi **10.10.10.13** (DC-Dicky-Rista, via ether3 backup), membuktikan bahwa OSPF berhasil mengaktifkan jalur backup secara otomatis tanpa intervensi administrator. Perubahan routing table setelah failover ditampilkan pada Gambar 4.
 
-Verifikasi lanjutan dilakukan melalui traceroute dari pc1.cab1 ke server.dc (172.16.10.3). Pada kondisi normal, traceroute menunjukkan **3 hop**: gateway VLAN 10 (192.168.10.1) → HQ-Dika → server.dc. Setelah failover, traceroute menunjukkan **2 hop**: gateway VLAN 10 (192.168.10.1) → DC-Dicky-Rista (10.10.10.13) → server.dc. Pengurangan satu hop ini konsisten dengan bypass terhadap router HQ-Dika, dan dikonfirmasi oleh peningkatan nilai TTL pada reply ping dari **61** (kondisi normal, 3 hop) menjadi **62** (kondisi failover, 2 hop).
+**[Gambar 4. Routing Table CAB1-Galih Kondisi Failover — Seluruh Rute Beralih ke DC-Dicky-Rista (10.10.10.13)]**
+
+Verifikasi lanjutan dilakukan melalui traceroute dari pc1.cab1 ke server.dc (172.16.10.3). Pada kondisi normal, traceroute menunjukkan **3 hop**: gateway VLAN 10 (192.168.10.1) → HQ-Dika → server.dc. Setelah failover, traceroute menunjukkan **2 hop**: gateway VLAN 10 (192.168.10.1) → DC-Dicky-Rista (10.10.10.13) → server.dc, sebagaimana ditampilkan pada Gambar 5. Pengurangan satu hop ini konsisten dengan bypass terhadap router HQ-Dika, dan dikonfirmasi oleh peningkatan nilai TTL pada reply ping dari **61** (kondisi normal, 3 hop) menjadi **62** (kondisi failover, 2 hop).
+
+**[Gambar 5. Traceroute dari pc1.cab1 ke server.dc saat Failover — Dua Hop via DC Langsung]**
 
 ### 3.4 Resolusi DNS dan Akses Web Server saat Failover
 

@@ -83,6 +83,12 @@ modernisasi-jaringan-vlan-ospf/
 │   ├── laporan-praktikum.md               ← Laporan praktikum lengkap (sumber data)
 │   └── Template Kinetik Mendeley.docx     ← Template jurnal KINETIK
 │
+├── images/                                ← Screenshot bukti pengujian (untuk artikel)
+│   ├── Gambar 2.png                       ← OSPF Neighbor DC — 3 neighbor Full
+│   ├── gambar 3.png                       ← Routing table CAB1 normal (via HQ)
+│   ├── Gambar 4.png                       ← Routing table CAB1 failover (via DC)
+│   └── Gambar 5.png                       ← Traceroute failover (2 hop)
+│
 └── topology/                              ← Topologi jaringan
     ├── topology.png                       ← Diagram topologi final (GNS3)
     └── topology-description.md            ← Deskripsi komponen dan jalur routing
